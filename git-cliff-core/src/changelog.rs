@@ -686,6 +686,7 @@ mod test {
 		RemoteConfig,
 		TextProcessor,
 	};
+	use crate::BLAME_IGNORE_FILE;
 	use pretty_assertions::assert_eq;
 	use regex::Regex;
 	use std::str;
@@ -719,11 +720,14 @@ mod test {
 				output:         None,
 			},
 			git:       GitConfig {
-				conventional_commits:     Some(true),
-				require_conventional:     Some(false),
-				filter_unconventional:    Some(false),
-				split_commits:            Some(false),
-				commit_preprocessors:     Some(vec![TextProcessor {
+				conventional_commits: Some(true),
+				require_conventional: Some(false),
+				filter_unconventional: Some(false),
+				blame_ignore_revs_file: Some(BLAME_IGNORE_FILE.to_string()),
+				filter_blame_ignored_revs: Some(false),
+				filter_mono_commits_to_blame_ignore: Some(true),
+				split_commits: Some(false),
+				commit_preprocessors: Some(vec![TextProcessor {
 					pattern:         Regex::new("<preprocess>")
 						.expect("failed to compile regex"),
 					replace:         Some(String::from(
@@ -731,7 +735,7 @@ mod test {
 					)),
 					replace_command: None,
 				}]),
-				commit_parsers:           Some(vec![
+				commit_parsers: Some(vec![
 					CommitParser {
 						sha:           Some(String::from("tea")),
 						message:       None,
@@ -866,16 +870,16 @@ mod test {
 					},
 				]),
 				protect_breaking_commits: None,
-				filter_commits:           Some(false),
-				tag_pattern:              None,
-				skip_tags:                Regex::new("v3.*").ok(),
-				ignore_tags:              None,
-				count_tags:               None,
-				use_branch_tags:          Some(false),
-				topo_order:               Some(false),
-				sort_commits:             Some(String::from("oldest")),
-				link_parsers:             None,
-				limit_commits:            None,
+				filter_commits: Some(false),
+				tag_pattern: None,
+				skip_tags: Regex::new("v3.*").ok(),
+				ignore_tags: None,
+				count_tags: None,
+				use_branch_tags: Some(false),
+				topo_order: Some(false),
+				sort_commits: Some(String::from("oldest")),
+				link_parsers: None,
+				limit_commits: None,
 			},
 			remote:    RemoteConfig {
 				github:    Remote {
